@@ -103,34 +103,18 @@ pub enum Error {
     InvalidTransaction,
 }
 
-impl StdError for Error {
-    fn description(&self) -> &str {
-        match *self {
-            Error::ValidatorError => "Validator returned internal error",
-            Error::NoResource => "Resource not found",
-            Error::CommunicationError(ref msg) => msg,
-            Error::ParseError(ref msg) => msg,
-            Error::AccountLoadError => "Account loading failed",
-            Error::SigningError => "Signing failed",
-            Error::InvalidTransaction => "Submitted transaction was invalid",
-        }
-    }
-
-    fn cause(&self) -> Option<&dyn StdError> {
-        None
-    }
-}
+impl StdError for Error {}
 
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         match *self {
-            Error::ValidatorError => write!(f, "ValidatorError"),
-            Error::NoResource => write!(f, "NoResource"),
-            Error::CommunicationError(ref msg) => write!(f, "CommunicationError: {}", msg),
-            Error::ParseError(ref msg) => write!(f, "ParseError: {}", msg),
-            Error::AccountLoadError => write!(f, "AccountLoadError"),
-            Error::SigningError => write!(f, "SigningError"),
-            Error::InvalidTransaction => write!(f, "InvalidTransaction"),
+            Error::ValidatorError => write!(f, "Validator returned internal error"),
+            Error::NoResource => write!(f, "Resource not found"),
+            Error::CommunicationError(ref msg) => f.write_str(msg),
+            Error::ParseError(ref msg) => f.write_str(msg),
+            Error::AccountLoadError => write!(f, "Account loading failed"),
+            Error::SigningError => write!(f, "Signing failed"),
+            Error::InvalidTransaction => write!(f, "Submitted transaction was invalid"),
         }
     }
 }

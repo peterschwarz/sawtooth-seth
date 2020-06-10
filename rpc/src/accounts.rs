@@ -45,30 +45,16 @@ pub enum Error {
     SigningError,
 }
 
-impl StdError for Error {
-    fn description(&self) -> &str {
-        match *self {
-            Error::IoError(ref ie) => ie.description(),
-            Error::ParseError(ref msg) => msg,
-            Error::DirNotFound => "Couldn't find key directory",
-            Error::AliasNotFound => "Alias not found in key directory",
-            Error::SigningError => "Signing failed",
-        }
-    }
-
-    fn cause(&self) -> Option<&dyn StdError> {
-        None
-    }
-}
+impl StdError for Error {}
 
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         match *self {
             Error::IoError(ref ie) => ie.fmt(f),
-            Error::ParseError(ref msg) => write!(f, "ParseError: {}", msg),
-            Error::DirNotFound => write!(f, "DirNotFound"),
-            Error::AliasNotFound => write!(f, "AliasNotFound"),
-            Error::SigningError => write!(f, "SigningError"),
+            Error::ParseError(ref msg) => f.write_str(msg),
+            Error::DirNotFound => write!(f, "Could not find key directory"),
+            Error::AliasNotFound => write!(f, "Alias not found in key directory"),
+            Error::SigningError => write!(f, "Signing failed"),
         }
     }
 }

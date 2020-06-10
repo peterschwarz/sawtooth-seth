@@ -154,7 +154,7 @@ fn abort_if_err<T, E: std::error::Error>(r: Result<T, E>) -> T {
     match r {
         Ok(t) => t,
         Err(error) => {
-            eprintln!("{}", error.description());
+            eprintln!("{}", error);
             process::exit(1);
         }
     }
